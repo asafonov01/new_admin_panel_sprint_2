@@ -13,14 +13,16 @@ services:
       - ./.env
 
   service:
-    build: .
+    build: ./django_api
     restart: always
     volumes:
       - static_volume:/code/static
     env_file:
       - ./.env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+        restart: true
 
   nginx:
     image: nginx:1.21.6-alpine
